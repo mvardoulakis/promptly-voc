@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — Promptly Voice of Customer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --page:#F8F9FC;--surface:#EEF2FF;--surface-2:#E0E7FF;--white:#FFFFFF;
+  --blue:#2563EB;--blue-dark:#1D4ED8;--blue-deep:#1E3A8A;
+  --blue-faint:rgba(37,99,235,0.07);--blue-faint2:rgba(37,99,235,0.13);
+  --blue-border:rgba(37,99,235,0.2);
+  --green:#059669;--green-faint:rgba(16,185,129,0.07);--green-border:rgba(16,185,129,0.2);
+  --text-1:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:rgba(0,0,0,0.07);--border-2:rgba(0,0,0,0.12);
+  --sans:'Outfit',system-ui,sans-serif;--r:8px;--rl:14px;--col:600px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--page);color:var(--text-1);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,249,252,.95);backdrop-filter:blur(16px);border-bottom:.5px solid var(--border)}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.nav-back{font-size:13px;color:var(--text-2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--text-1)}
+
+.page-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 90% 5%,rgba(37,99,235,.04) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 5% 90%,rgba(37,99,235,.03) 0%,transparent 60%)}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:var(--col);margin:0 auto;padding:110px 24px 100px}
+
+/* CONFIRMED STATE */
+.confirm-icon{width:56px;height:56px;border-radius:50%;background:var(--green-faint);border:.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.confirm-icon svg{width:26px;height:26px}
+.state-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--green);background:var(--green-faint);border:.5px solid var(--green-border);padding:4px 11px;border-radius:100px;margin-bottom:14px}
+.tag-dot{width:4px;height:4px;border-radius:50%;background:currentColor}
+
+h1{font-size:36px;line-height:1.1;font-weight:600;color:var(--text-1);margin-bottom:12px;letter-spacing:-.02em}
+.page-sub{font-size:15px;color:var(--text-2);line-height:1.7;font-weight:300;margin-bottom:36px}
+
+/* WHAT HAPPENS NEXT */
+.card{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:24px}
+.card-hdr{padding:16px 22px;border-bottom:.5px solid var(--border);background:var(--surface);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);font-weight:500}
+.card-body{padding:20px 22px}
+
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;align-items:flex-start;gap:16px;padding:18px 0;border-bottom:.5px solid var(--border)}
+.step:last-child{border-bottom:none;padding-bottom:0}
+.step:first-child{padding-top:0}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--blue);flex-shrink:0;margin-top:1px}
+.step-body{}
+.step-title{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:4px;letter-spacing:-.01em}
+.step-desc{font-size:13px;color:var(--text-2);line-height:1.6;font-weight:300}
+
+/* GENERIC STATE */
+.generic-icon{width:56px;height:56px;border-radius:50%;background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.generic-icon svg{width:26px;height:26px}
+
+/* BACK LINK */
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);text-decoration:none;transition:color .2s;margin-top:8px}
+.back-link:hover{color:var(--blue)}
+
+/* HIDDEN */
+.hidden{display:none}
+
+@media(max-width:640px){
+  nav{padding:12px 20px}
+  .wrap{padding:90px 18px 80px}
+  h1{font-size:28px}
+  .card-body{padding:16px 18px}
+  .card-hdr{padding:12px 18px}
+}
+</style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/logo.png" alt="Promptly VoC" style="height:36px;width:auto">
+  </a>
+  <a href="/" class="nav-back">← Back to Promptly VoC</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- CONFIRMED STATE (shown when ?session_id= is present) -->
+  <div id="confirmedState" class="hidden">
+    <div class="confirm-icon">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 13.5l5.5 5.5L21 7" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="state-tag"><span class="tag-dot"></span>Confirmed</div>
+    <h1>Brief ordered — you're confirmed</h1>
+    <p class="page-sub">We're on it. Your brief goes into our queue and will be reviewed by a Promptly analyst before it ships.</p>
+
+    <div class="card">
+      <div class="card-hdr">What happens next</div>
+      <div class="card-body">
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">We pull your reviews</div>
+              <div class="step-desc">We find your listings on the platforms you selected and pull your most recent reviews — typically 2–4 hours.</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">AI generates the full brief</div>
+              <div class="step-desc">Sentiment, friction themes, revenue leakage, what's driving return visits, industry benchmark — all compiled automatically.</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Analyst review, then delivery</div>
+              <div class="step-desc">A Promptly analyst reviews every finding for accuracy before your brief ships to your inbox.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <a href="/" class="back-link">← Back to Promptly VoC</a>
+  </div>
+
+  <!-- GENERIC THANK YOU STATE (shown when no ?session_id= present) -->
+  <div id="genericState" class="hidden">
+    <div class="generic-icon">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 3C7.477 3 3 7.477 3 13s4.477 10 10 10 10-4.477 10-10S18.523 3 13 3z" stroke="#2563EB" stroke-width="1.5"/>
+        <path d="M13 8v5l3 3" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1>Thanks for your order</h1>
+    <p class="page-sub">Your brief is in the queue. Keep an eye on your inbox — we'll send it your way once the analyst review is complete.</p>
+    <a href="/" class="back-link">← Back to Promptly VoC</a>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.has('session_id') && params.get('session_id')) {
+    document.getElementById('confirmedState').classList.remove('hidden');
+  } else {
+    document.getElementById('genericState').classList.remove('hidden');
+  }
+})();
+</script>
+
+</body>
+</html>

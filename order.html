@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order a Brief — Promptly Voice of Customer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --page:#F8F9FC;--surface:#EEF2FF;--surface-2:#E0E7FF;--white:#FFFFFF;
+  --blue:#2563EB;--blue-dark:#1D4ED8;--blue-deep:#1E3A8A;
+  --blue-faint:rgba(37,99,235,0.07);--blue-faint2:rgba(37,99,235,0.13);
+  --blue-border:rgba(37,99,235,0.2);
+  --green-faint:rgba(16,185,129,0.07);--green-border:rgba(16,185,129,0.2);
+  --amber-faint:rgba(195,130,20,0.07);--amber-border:rgba(195,130,20,0.22);
+  --red-faint:rgba(185,50,40,0.06);--red-border:rgba(185,50,40,0.2);
+  --text-1:#0F172A;--text-2:#475569;--text-3:#94A3B8;
+  --border:rgba(0,0,0,0.07);--border-2:rgba(0,0,0,0.12);
+  --sans:'Outfit',system-ui,sans-serif;--r:8px;--rl:14px;--col:600px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--page);color:var(--text-1);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,249,252,.95);backdrop-filter:blur(16px);border-bottom:.5px solid var(--border)}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:26px;height:26px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo-mark svg{width:14px;height:14px}
+.nav-logo-text{font-size:15px;font-weight:600;color:var(--text-1);letter-spacing:-.01em}
+.nav-logo-text span{color:var(--blue)}
+.nav-product{font-size:10px;color:var(--text-3);letter-spacing:.4px;display:block;margin-top:1px}
+.nav-back{font-size:13px;color:var(--text-2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--text-1)}
+
+.page-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 600px 400px at 90% 5%,rgba(37,99,235,.04) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 5% 90%,rgba(37,99,235,.03) 0%,transparent 60%)}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:var(--col);margin:0 auto;padding:86px 24px 100px}
+
+/* SLOT BANNER */
+.slot-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:11px 16px;border-radius:var(--r);margin-bottom:32px;border:.5px solid var(--amber-border);background:var(--amber-faint)}
+.slot-banner.open{border-color:var(--green-border);background:var(--green-faint)}
+.slot-banner.full{border-color:var(--red-border);background:var(--red-faint)}
+.slot-left{display:flex;align-items:center;gap:10px}
+.sdots{display:flex;gap:4px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--border-2)}
+.sdot.used{background:rgba(195,130,20,.8)}
+.sdot.used.last{background:rgba(185,50,40,.7)}
+.slot-banner.open .sdot.used{background:rgba(16,185,129,.8)}
+.slot-text{font-size:13px;color:var(--text-2)}
+.slot-text strong{color:var(--text-1);font-weight:500}
+.slot-resets{font-size:12px;color:var(--text-3)}
+
+/* PAGE HEADER */
+.page-hdr{margin-bottom:32px}
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);background:var(--blue-faint);border:.5px solid var(--blue-border);padding:4px 11px;border-radius:100px;margin-bottom:14px}
+.tag-dot{width:4px;height:4px;border-radius:50%;background:var(--blue)}
+h1{font-size:38px;line-height:1.08;font-weight:600;color:var(--text-1);margin-bottom:10px;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--blue)}
+.page-sub{font-size:15px;color:var(--text-2);line-height:1.7;font-weight:300}
+
+/* CARDS */
+.card{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:12px}
+.card-hdr{padding:16px 22px;border-bottom:.5px solid var(--border);background:var(--surface);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);font-weight:500}
+.card-body{padding:20px 22px}
+
+/* VERTICAL TABS */
+.vert-tabs{display:flex;flex-direction:column;gap:8px}
+.vtab{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--rl);cursor:pointer;transition:all .18s;font-family:var(--sans);text-align:left}
+.vtab:hover{border-color:var(--blue-border);background:var(--blue-faint)}
+.vtab.active{border-color:var(--blue-border);border-width:1.5px;background:var(--blue-faint)}
+.vtab-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.vtab-name{font-size:14px;font-weight:600;color:var(--text-1);display:block;margin-bottom:2px;letter-spacing:-.01em}
+.vtab-desc{font-size:12px;color:var(--text-2);line-height:1.4;display:block;font-weight:300}
+.vtab-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.vtag{font-size:10px;color:var(--text-3);background:var(--white);border:.5px solid var(--border);padding:2px 7px;border-radius:3px}
+.vtab.active .vtag{background:rgba(37,99,235,.05);border-color:var(--blue-border)}
+.ferr-type{font-size:11px;color:rgba(185,50,40,.8);margin-top:8px;display:none}
+.ferr-type.show{display:block}
+
+/* FIELDS */
+.fields{display:flex;flex-direction:column;gap:13px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:6px}
+.req{color:var(--blue);margin-left:1px}
+.opt{color:var(--text-3);font-weight:400;margin-left:4px;font-size:11px}
+.field input,.field select,.field textarea{width:100%;background:var(--surface);border:.5px solid var(--border);border-radius:var(--r);padding:10px 13px;font-family:var(--sans);font-size:13px;color:var(--text-1);outline:none;appearance:none;transition:border-color .2s,background .2s}
+.field input::placeholder,.field textarea::placeholder{color:var(--text-3);font-size:13px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue-border);background:var(--white)}
+.field input.err,.field select.err{border-color:rgba(185,50,40,.4)}
+.ferr{font-size:11px;color:rgba(185,50,40,.8);margin-top:4px;display:none}
+.ferr.show{display:block}
+.fhint{font-size:11px;color:var(--text-3);margin-top:5px;line-height:1.45}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='rgba(71,85,105,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer}
+.field textarea{resize:vertical;line-height:1.6;min-height:76px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px}
+
+/* PLATFORMS */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.popt{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;user-select:none}
+.popt:hover{border-color:var(--border-2)}
+.popt.on{border-color:var(--blue-border);background:var(--blue-faint)}
+.popt.over{opacity:.55;border-color:rgba(37,99,235,.2)}
+.popt.over .pchk{background:var(--blue)!important;border-color:var(--blue)!important;color:#fff!important}
+.popt input{display:none}
+.pchk{width:15px;height:15px;border-radius:4px;flex-shrink:0;border:.5px solid var(--border-2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .15s}
+.popt.on .pchk{background:var(--blue);border-color:var(--blue);color:#fff}
+.pname{font-size:12px;color:var(--text-2)}
+.popt.on .pname,.popt.over .pname{color:var(--text-1)}
+
+/* UPSELL */
+.upsell{display:none;align-items:flex-start;gap:9px;padding:10px 13px;border-radius:var(--r);background:var(--blue-faint);border:.5px solid var(--blue-border);margin-top:9px}
+.upsell.show{display:flex}
+.upsell-body{flex:1;font-size:12px;color:var(--text-2);line-height:1.5}
+.upsell-body strong{color:var(--text-1);font-weight:500;display:block;margin-bottom:1px}
+.upsell-link{font-size:11px;color:var(--blue-deep);font-weight:500;text-decoration:underline;text-underline-offset:2px;cursor:pointer;margin-top:2px;display:inline-block}
+.upsell-x{font-size:17px;color:var(--text-3);cursor:pointer;line-height:1;flex-shrink:0}
+.upsell-x:hover{color:var(--text-2)}
+
+/* TIME PERIOD */
+.period-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.popt-radio{display:flex;align-items:center;justify-content:center;padding:10px 8px;background:var(--surface);border:.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;user-select:none;text-align:center}
+.popt-radio:hover{border-color:var(--border-2)}
+.popt-radio.on{border-color:var(--blue-border);border-width:1.5px;background:var(--blue-faint)}
+.popt-radio input{display:none}
+.pr-label{font-size:12px;color:var(--text-2);font-weight:400}
+.popt-radio.on .pr-label{color:var(--blue-deep);font-weight:500}
+
+/* FOCUS */
+.focus-wrap{background:var(--blue-faint);border:.5px solid var(--blue-border);border-radius:var(--rl);padding:14px 16px}
+.focus-lbl{font-size:12px;font-weight:500;color:var(--blue-deep);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.focus-wrap textarea{width:100%;background:transparent;border:none;padding:0;font-family:var(--sans);font-size:13px;color:var(--text-1);outline:none;resize:none;min-height:64px;line-height:1.6}
+.focus-wrap textarea::placeholder{color:var(--text-3);font-size:13px}
+.fexs{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.fex{font-size:11px;color:var(--text-3);padding:4px 10px;border:.5px solid var(--blue-border);border-radius:100px;cursor:pointer;transition:all .15s;background:transparent;font-family:var(--sans)}
+.fex:hover{color:var(--blue-deep);background:var(--white)}
+
+/* ORDER SUMMARY */
+.summary{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:12px}
+.sum-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px;padding-bottom:13px;border-bottom:.5px solid var(--border)}
+.sum-name{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;letter-spacing:-.01em}
+.sum-desc{font-size:13px;color:var(--text-2);font-weight:300}
+.sum-price{font-size:32px;font-weight:600;color:var(--text-1);line-height:1;flex-shrink:0;letter-spacing:-.02em}
+.sum-price sup{font-size:15px;font-weight:500;vertical-align:top;margin-top:5px;display:inline-block}
+.sum-includes{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sum-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-2);font-weight:300}
+.sum-dot{width:4px;height:4px;border-radius:50%;background:var(--blue);flex-shrink:0;opacity:.7}
+.sum-upgrade{margin-top:11px;padding-top:11px;border-top:.5px solid var(--border);font-size:12px;color:var(--text-3);line-height:1.5}
+.sum-upgrade a{color:var(--blue-deep);text-decoration:underline;text-underline-offset:2px}
+
+/* CUSTOM OPT-IN */
+.custom-opt{display:flex;align-items:flex-start;gap:10px;padding:13px 15px;background:var(--white);border:.5px solid var(--border);border-radius:var(--r);cursor:pointer;margin-bottom:18px}
+.custom-opt input{width:auto;margin-top:3px;accent-color:var(--blue);flex-shrink:0;cursor:pointer}
+.co-text{font-size:13px;color:var(--text-2);line-height:1.5;font-weight:300}
+.co-text strong{color:var(--text-1);font-weight:500;display:block;margin-bottom:1px}
+
+/* SUBMIT */
+.btn-submit{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:var(--r);background:var(--blue);color:#fff;border:none;cursor:pointer;font-family:var(--sans);font-size:14px;font-weight:500;transition:all .15s;letter-spacing:-.01em}
+.btn-submit:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-submit.loading{opacity:.65;cursor:not-allowed;transform:none}
+.snote{font-size:12px;color:var(--text-3);text-align:center;margin-top:10px;line-height:1.6}
+
+/* WAITLIST */
+.waitlist-card{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:40px 28px;text-align:center;display:none}
+.waitlist-card h2{font-size:22px;font-weight:600;color:var(--text-1);margin-bottom:10px;letter-spacing:-.01em}
+.waitlist-card p{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:22px;font-weight:300}
+
+/* SUCCESS */
+.success-card{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:48px 28px;text-align:center;display:none}
+.suc-circle{width:50px;height:50px;border-radius:50%;background:var(--green-faint);border:.5px solid var(--green-border);display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 16px}
+.success-card h2{font-size:22px;font-weight:600;color:var(--text-1);margin-bottom:9px;letter-spacing:-.01em}
+.success-card p{font-size:13px;color:var(--text-2);line-height:1.7;margin-bottom:20px;font-weight:300}
+.suc-detail{background:var(--surface);border:.5px solid var(--border);border-radius:var(--r);padding:12px 14px;margin:0 auto 22px;text-align:left;max-width:400px}
+.suc-row{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;border-bottom:.5px solid var(--border)}
+.suc-row:last-child{border-bottom:none}
+.suc-row .k{color:var(--text-3)}
+.suc-row .v{color:var(--text-2);font-weight:500;max-width:58%;text-align:right}
+.wn{text-align:left;max-width:400px;margin:0 auto 22px}
+.wn-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:11px;font-weight:500}
+.wn-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;color:var(--text-2);line-height:1.5;font-weight:300}
+.wn-n{width:19px;height:19px;border-radius:50%;flex-shrink:0;background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:var(--blue);margin-top:1px}
+.back-link{font-size:13px;color:var(--text-3);text-decoration:none;border:.5px solid var(--border);padding:9px 18px;border-radius:var(--r);display:inline-block;transition:all .15s}
+.back-link:hover{color:var(--text-2);border-color:var(--border-2)}
+
+@media(max-width:600px){
+  nav{padding:13px 16px}
+  .wrap{padding:80px 16px 80px}
+  h1{font-size:26px;line-height:1.1}
+  .page-hdr{margin-bottom:24px}
+
+  /* vertical tabs */
+  .vert-tabs{flex-direction:column;gap:6px}
+  .vtab{width:100%;justify-content:flex-start}
+
+  /* form rows */
+  .row-2,.row-3{grid-template-columns:1fr}
+
+  /* platforms */
+  .pgrid{grid-template-columns:1fr 1fr}
+
+  /* time period */
+  .period-grid{grid-template-columns:1fr 1fr}
+
+  /* order summary */
+  .sum-includes{grid-template-columns:1fr}
+  .sum-top{flex-direction:column;gap:8px}
+  .sum-price{font-size:26px}
+
+  /* slot banner */
+  .slot-banner{flex-direction:column;align-items:flex-start;gap:8px}
+  .slot-resets{margin-left:0}
+
+  /* cards */
+  .waitlist-card,.success-card{padding:28px 18px}
+  .card{padding:20px 16px}
+
+  /* focus pills */
+  .fexs{gap:4px}
+  .fex{font-size:10px;padding:3px 8px}
+
+  /* submit note */
+  .snote{font-size:11px}
+}
+@media(max-width:360px){
+  .pgrid{grid-template-columns:1fr}
+  .period-grid{grid-template-columns:1fr 1fr}
+  h1{font-size:22px}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .3s ease both}
+</style>
+</head>
+<body>
+<div class="page-bg"></div>
+<nav>
+  <a href="/voc/" class="nav-logo">
+    <img src="/logo.png" alt="Promptly VoC" style="height:36px;width:auto">
+  </a>
+  <a href="/voc/" class="nav-back">← Back to site</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- SLOT BANNER -->
+  <div class="slot-banner" id="slotBanner">
+    <div class="slot-left">
+      <div class="sdots" id="slotDots"></div>
+      <div class="slot-text"><strong id="slotText">6 of 10 slots remaining</strong> this week</div>
+    </div>
+    <div class="slot-resets">Resets Monday · Week of March 31</div>
+  </div>
+
+  <div id="mainForm">
+    <div class="page-hdr">
+      <div class="tag"><div class="tag-dot"></div>Snapshot Brief</div>
+      <h1>Order your <em>brief</em></h1>
+      <p class="page-sub">Fill in the details below and we'll have an analyst-reviewed brief in your inbox within 48 hours.</p>
+    </div>
+
+    <!-- TYPE -->
+    <div class="card">
+      <div class="card-hdr">What kind of business?</div>
+      <div class="card-body">
+        <div class="vert-tabs">
+          <button class="vtab active" onclick="setVertical('location')" id="vt-location">
+            <div class="vtab-icon">📍</div>
+            <div><span class="vtab-name">Physical location</span><span class="vtab-desc">A business where customers visit in person and review their experience.</span><div class="vtab-tags"><span class="vtag">Hotel</span><span class="vtag">Restaurant</span><span class="vtag">Retail</span><span class="vtag">Spa</span><span class="vtag">Bar</span><span class="vtag">Attraction</span></div></div>
+          </button>
+          <button class="vtab" onclick="setVertical('product')" id="vt-product">
+            <div class="vtab-icon">📦</div>
+            <div><span class="vtab-name">Product or brand</span><span class="vtab-desc">A physical product or ecommerce brand where customers review what they bought.</span><div class="vtab-tags"><span class="vtag">CPG</span><span class="vtag">Ecommerce</span><span class="vtag">Food & bev</span><span class="vtag">Beauty</span><span class="vtag">Apparel</span></div></div>
+          </button>
+          <button class="vtab" onclick="setVertical('digital')" id="vt-digital">
+            <div class="vtab-icon">💻</div>
+            <div><span class="vtab-name">Software or service</span><span class="vtab-desc">A digital product, SaaS tool, app, or professional services firm.</span><div class="vtab-tags"><span class="vtag">SaaS</span><span class="vtag">Mobile app</span><span class="vtag">Agency</span><span class="vtag">Services</span></div></div>
+          </button>
+        </div>
+        <div class="ferr-type" id="e-type">Please select a business type to continue.</div>
+      </div>
+    </div>
+
+    <!-- LOCATION FIELDS -->
+    <div class="card" id="fields-location">
+      <div class="card-hdr">Your location</div>
+      <div class="card-body">
+        <div class="fields">
+          <div class="row-2">
+            <div class="field"><label>Business name <span class="req">*</span></label><input type="text" id="loc-name" placeholder="e.g. The Willow Inn, Café Lune"><div class="ferr" id="e-loc-name">Required</div></div>
+            <div class="field"><label>Business type <span class="req">*</span></label><select id="loc-type" onchange="updatePlatforms()"><option value="" disabled selected>Select type</option><option value="hotel">Hotel or resort</option><option value="bnb">B&amp;B or inn</option><option value="restaurant">Restaurant or café</option><option value="qsr">QSR / fast casual</option><option value="bar">Bar or nightlife</option><option value="retail">Retail store</option><option value="spa">Spa or wellness</option><option value="attraction">Attraction or experience</option><option value="other">Other</option></select><div class="ferr" id="e-loc-type">Required</div></div>
+          </div>
+          <div class="field"><label>Website <span class="opt">(optional)</span></label><input type="url" id="loc-website" placeholder="https://yourbusiness.com"><div class="fhint">Helps us find your listings faster.</div></div>
+          <div class="row-2">
+            <div class="field"><label>City <span class="req">*</span></label><input type="text" id="loc-city" placeholder="e.g. Charleston"><div class="ferr" id="e-loc-city">Required</div></div>
+            <div class="field"><label>State <span class="req">*</span></label><input type="text" id="loc-state" placeholder="e.g. SC"><div class="ferr" id="e-loc-state">Required</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT FIELDS -->
+    <div class="card" id="fields-product" style="display:none">
+      <div class="card-hdr">Your product or brand</div>
+      <div class="card-body">
+        <div class="fields">
+          <div class="row-2">
+            <div class="field"><label>Brand or product name <span class="req">*</span></label><input type="text" id="prod-name" placeholder="e.g. Bloom Candle Co., Harvest Oats"><div class="ferr" id="e-prod-name">Required</div></div>
+            <div class="field"><label>What do you sell? <span class="req">*</span></label><input type="text" id="prod-offer" placeholder="e.g. soy candles, organic granola"><div class="ferr" id="e-prod-offer">Required</div></div>
+          </div>
+          <div class="field"><label>Website <span class="opt">(optional)</span></label><input type="url" id="prod-website" placeholder="https://yourbrand.com"><div class="fhint">Helps us find your listings faster.</div></div>
+          <div class="row-3">
+            <div class="field"><label>City <span class="req">*</span></label><input type="text" id="prod-city" placeholder="e.g. Austin"><div class="ferr" id="e-prod-city">Required</div></div>
+            <div class="field"><label>State <span class="req">*</span></label><input type="text" id="prod-state" placeholder="e.g. TX"><div class="ferr" id="e-prod-state">Required</div></div>
+            <div class="field"><label>Category</label><select id="prod-cat"><option value="" disabled selected>Select</option><option value="food">Food &amp; beverage</option><option value="beauty">Beauty &amp; personal care</option><option value="home">Home &amp; lifestyle</option><option value="apparel">Apparel &amp; accessories</option><option value="health">Health &amp; wellness</option><option value="pet">Pet products</option><option value="baby">Baby &amp; kids</option><option value="tech">Consumer electronics</option><option value="other">Other</option></select></div>
+          </div>
+          <div class="field"><label>Specific product or SKU to focus on <span class="opt">(optional — leave blank for full catalog)</span></label><input type="text" id="prod-sku" placeholder="e.g. Lavender + Cedar 8oz, starter bundle"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIGITAL FIELDS -->
+    <div class="card" id="fields-digital" style="display:none">
+      <div class="card-hdr">Your software or service</div>
+      <div class="card-body">
+        <div class="fields">
+          <div class="row-2">
+            <div class="field"><label>Product or company name <span class="req">*</span></label><input type="text" id="dig-name" placeholder="e.g. Fieldwork, Crane Legal"><div class="ferr" id="e-dig-name">Required</div></div>
+            <div class="field"><label>What does it do? <span class="req">*</span></label><input type="text" id="dig-offer" placeholder="e.g. project management for construction teams"><div class="ferr" id="e-dig-offer">Required</div></div>
+          </div>
+          <div class="field"><label>Website <span class="opt">(optional)</span></label><input type="url" id="dig-website" placeholder="https://yourproduct.com"><div class="fhint">Helps us find your listings faster.</div></div>
+          <div class="row-3">
+            <div class="field"><label>City <span class="req">*</span></label><input type="text" id="dig-city" placeholder="e.g. New York"><div class="ferr" id="e-dig-city">Required</div></div>
+            <div class="field"><label>State <span class="req">*</span></label><input type="text" id="dig-state" placeholder="e.g. NY"><div class="ferr" id="e-dig-state">Required</div></div>
+            <div class="field"><label>Type</label><select id="dig-type"><option value="" disabled selected>Select</option><option value="saas">SaaS / web app</option><option value="mobile">Mobile app</option><option value="agency">Agency or consultancy</option><option value="services">Professional services</option><option value="marketplace">Marketplace or platform</option><option value="other">Other</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATFORMS -->
+    <div class="card">
+      <div class="card-hdr">Review platforms <span style="font-size:10px;color:var(--text-3);letter-spacing:0;text-transform:none;margin-left:6px">— up to 3 for Snapshot</span></div>
+      <div class="card-body">
+        <div class="pgrid" id="platformGrid">
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Google</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">TripAdvisor</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Yelp</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Booking.com</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Expedia</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">OpenTable</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Amazon</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Trustpilot</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">G2</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Capterra</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">App Store</span></div>
+          <div class="popt" onclick="togP(this)"><input type="checkbox"><div class="pchk"></div><span class="pname">Google Play</span></div>
+        </div>
+        <div class="ferr" id="e-platforms" style="margin-top:7px">Select at least one platform.</div>
+        <div class="upsell" id="platformUpsell">
+          <div class="upsell-body"><strong>Snapshot covers up to 3 platforms</strong>Selections beyond 3 won't be included. Need more? <span class="upsell-link" onclick="window.open('/voc/#contact','_blank')">Get in touch about a custom engagement →</span></div>
+          <span class="upsell-x" onclick="dismissUpsell('platformUpsell')">×</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIME PERIOD -->
+    <div class="card">
+      <div class="card-hdr">Time period</div>
+      <div class="card-body">
+        <div class="period-grid">
+          <div class="popt-radio on" onclick="setPeriod(this,'1mo')"><input type="radio" name="period" value="1mo"><div class="pr-label">1 month</div></div>
+          <div class="popt-radio" onclick="setPeriod(this,'3mo')"><input type="radio" name="period" value="3mo"><div class="pr-label">3 months</div></div>
+          <div class="popt-radio" onclick="setPeriod(this,'6mo')"><input type="radio" name="period" value="6mo"><div class="pr-label">6 months</div></div>
+          <div class="popt-radio" onclick="setPeriod(this,'1yr')"><input type="radio" name="period" value="1yr"><div class="pr-label">1 year</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOCUS -->
+    <div class="card">
+      <div class="card-hdr">Focus question <span style="font-size:10px;color:var(--text-3);letter-spacing:0;text-transform:none;margin-left:6px">— optional</span></div>
+      <div class="card-body">
+        <div class="focus-wrap">
+          <div class="focus-lbl">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Is there a specific question you want this brief to answer?
+          </div>
+          <textarea id="focusQ" placeholder="The more specific you are, the more targeted the analysis..."></textarea>
+          <div class="fexs" id="focusExamples"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="card">
+      <div class="card-hdr">Where should we send the brief?</div>
+      <div class="card-body">
+        <div class="row-3">
+          <div class="field"><label>Your name <span class="req">*</span></label><input type="text" id="contactName" placeholder="Your name" autocomplete="name"><div class="ferr" id="e-contactName">Required</div></div>
+          <div class="field" style="grid-column:span 2"><label>Work email <span class="req">*</span></label><input type="email" id="contactEmail" placeholder="you@yourbusiness.com" autocomplete="email"><div class="ferr" id="e-contactEmail">Please enter a valid email</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY + SUBMIT -->
+    <div class="summary">
+      <div class="sum-top">
+        <div><div class="sum-name">Snapshot — Intelligence Brief</div><div class="sum-desc">Delivered within 48 hours · Human analyst reviewed</div></div>
+        <div class="sum-price"><sup>$</sup>29</div>
+      </div>
+      <div class="sum-includes">
+        <div class="sum-item"><div class="sum-dot"></div>1 location or listing</div>
+        <div class="sum-item"><div class="sum-dot"></div>Up to 3 platforms</div>
+        <div class="sum-item"><div class="sum-dot"></div>Up to 500 most recent reviews</div>
+        <div class="sum-item"><div class="sum-dot"></div>Industry benchmark included</div>
+      </div>
+      <div class="sum-upgrade">Want deeper coverage, recurring analysis, or custom insights? <a href="/voc/#contact" target="_blank">Get in touch and let's scope something together.</a></div>
+    </div>
+
+    <label class="custom-opt">
+      <input type="checkbox" id="customQ">
+      <div class="co-text">
+        <strong>I'm interested in ongoing or custom intelligence</strong>
+        Check this and we'll follow up after your brief arrives to explore deeper coverage, recurring briefs, or a custom engagement.
+      </div>
+    </label>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitForm()">
+      Submit &amp; proceed to payment
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13M22 2l-7 19-4-9-9-4 19-7z"/></svg>
+    </button>
+    <p class="snote">Payment via Stripe · Brief in your inbox within 48 hours · Questions? <a href="mailto:info@promptlyconsulting.com">info@promptlyconsulting.com</a></p>
+  </div>
+
+  <!-- WAITLIST -->
+  <div class="waitlist-card" id="waitlistCard">
+    <div style="font-size:28px;margin-bottom:12px">⏳</div>
+    <h2>Fully booked this week</h2>
+    <p>We cap briefs at 10 per week so every one gets the attention it deserves. Leave your email and we'll reach out when Monday's slots open.</p>
+    <div class="fields" style="max-width:340px;margin:0 auto">
+      <div class="field"><label>Email address</label><input type="email" id="waitlistEmail" placeholder="you@yourbusiness.com"></div>
+      <div class="field"><label>Business name <span class="opt">(optional)</span></label><input type="text" id="waitlistBiz" placeholder="Helps us prioritize your slot"></div>
+      <button class="btn-submit" onclick="joinWaitlist()">Join the waitlist</button>
+      <p class="snote" style="margin-top:10px">We'll email you Sunday evening when Monday's slots open.</p>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-card" id="successCard">
+    <div class="suc-circle">✓</div>
+    <h2>Brief ordered — you're confirmed</h2>
+    <p>We're on it. Your brief goes into our queue and will be reviewed by a Promptly analyst before it ships.</p>
+    <div class="suc-detail" id="sucDetail"></div>
+    <div class="wn">
+      <div class="wn-lbl">What happens next</div>
+      <div class="wn-item"><div class="wn-n">1</div><span>We pull your most recent reviews from the selected platforms — typically 2–4 hours</span></div>
+      <div class="wn-item"><div class="wn-n">2</div><span>AI generates the draft — sentiment, friction themes, revenue leakage, industry benchmark</span></div>
+      <div class="wn-item"><div class="wn-n">3</div><span>A Promptly analyst reviews every finding for accuracy before your brief ships</span></div>
+    </div>
+    <a href="/voc/" class="back-link">← Back to Promptly VoC</a>
+  </div>
+</div>
+
+<script>
+// ── SLOTS ──
+const TOTAL=10,USED=4,remaining=TOTAL-USED;
+(function(){
+  const dots=document.getElementById('slotDots');
+  for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='sdot'+(i<USED?(i===USED-1&&remaining<=2?' used last':' used'):'');dots.appendChild(d);}
+  const b=document.getElementById('slotBanner'),t=document.getElementById('slotText');
+  if(remaining<=0){b.className='slot-banner full';t.innerHTML='Fully booked this week';document.getElementById('mainForm').style.display='none';document.getElementById('waitlistCard').style.display='block';}
+  else if(remaining<=3){t.innerHTML='<strong>'+remaining+' of '+TOTAL+' slots remaining</strong> this week — filling fast';}
+  else{b.className='slot-banner open';t.innerHTML='<strong>'+remaining+' of '+TOTAL+' slots remaining</strong> this week';}
+})();
+
+let currentVertical='location',currentPeriod='1mo';
+const platDefaults={location:['Google','TripAdvisor','Yelp'],product:['Amazon','Google','Trustpilot'],digital:['G2','Trustpilot','Capterra']};
+const focusEx={
+  location:['Why did our ratings drop?','Are recent changes showing up?','What\'s hurting repeat visits?','Weekend vs. weekday patterns','Seasonal trend analysis'],
+  product:['New product reception','Packaging feedback','Quality vs. price perception','Shipping & delivery issues','Recent formula or design change'],
+  digital:['Feature satisfaction trends','Why did our ratings drop?','Onboarding friction','Support quality feedback','Recent release reception']
+};
+
+function setVertical(v){
+  currentVertical=v;
+  document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('vt-'+v).classList.add('active');
+  ['location','product','digital'].forEach(k=>{document.getElementById('fields-'+k).style.display=k===v?'block':'none';});
+  updatePlatforms();
+  document.getElementById('focusExamples').innerHTML=(focusEx[v]||[]).map(t=>`<button class="fex" onclick="addFocus(this)">${t}</button>`).join('');
+}
+
+const PLATFORM_CAP=3;
+function updatePlatforms(){
+  const defaults=platDefaults[currentVertical]||['Google'];
+  document.querySelectorAll('.popt').forEach(opt=>{const name=opt.querySelector('.pname').textContent;const on=defaults.includes(name);opt.classList.toggle('on',on);opt.classList.remove('over');opt.querySelector('.pchk').textContent=on?'✓':'';opt.querySelector('input').checked=on;});
+  const pu=document.getElementById('platformUpsell');pu.classList.remove('show');pu.style.display='';checkPlatformCap();
+}
+function togP(el){el.classList.toggle('on');const on=el.classList.contains('on');el.querySelector('.pchk').textContent=on?'✓':'';el.querySelector('input').checked=on;checkPlatformCap();hide('e-platforms');}
+function checkPlatformCap(){const sel=[...document.querySelectorAll('#platformGrid .popt.on')];sel.forEach((el,i)=>el.classList.toggle('over',i>=PLATFORM_CAP));if(sel.length>PLATFORM_CAP)document.getElementById('platformUpsell').classList.add('show');}
+function setPeriod(el,val){document.querySelectorAll('.popt-radio').forEach(p=>{p.classList.remove('on');});el.classList.add('on');currentPeriod=val;}
+function addFocus(el){const ta=document.getElementById('focusQ');ta.value=ta.value?ta.value+' '+el.textContent:el.textContent;ta.focus();}
+function dismissUpsell(id){const el=document.getElementById(id);if(el){el.classList.remove('show');el.style.display='none';}}
+
+function validate(){
+  let ok=true;const v=currentVertical;
+  if(v==='location')ok=req('loc-name')&req('loc-city')&req('loc-state')&req('loc-type')&&ok;
+  if(v==='product')ok=req('prod-name')&req('prod-offer')&req('prod-city')&req('prod-state')&&ok;
+  if(v==='digital')ok=req('dig-name')&req('dig-offer')&req('dig-city')&req('dig-state')&&ok;
+  const plats=document.querySelectorAll('#platformGrid .popt.on');
+  if(!plats.length){show('e-platforms');ok=false;}else hide('e-platforms');
+  ok=req('contactName')&&ok;
+  const em=val('contactEmail');
+  if(!em||!em.includes('@')||!em.includes('.')){mark('contactEmail',true);show('e-contactEmail');ok=false;}else{mark('contactEmail',false);hide('e-contactEmail');}
+  return !!ok;
+}
+function req(id){if(!val(id)){mark(id,true);show('e-'+id);return false;}mark(id,false);hide('e-'+id);return true;}
+function val(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function mark(id,err){const el=document.getElementById(id);if(el)el.classList.toggle('err',err);}
+function show(id){const el=document.getElementById(id);if(el)el.style.display='block';}
+function hide(id){const el=document.getElementById(id);if(el)el.style.display='none';}
+['loc-name','loc-city','loc-state','prod-name','prod-offer','prod-city','prod-state','dig-name','dig-offer','dig-city','dig-state','contactName','contactEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',()=>{mark(id,false);hide('e-'+id);});});
+
+function buildData(){
+  const v=currentVertical,platforms=[...document.querySelectorAll('#platformGrid .popt.on:not(.over)')].map(e=>e.querySelector('.pname').textContent);
+  const base={vertical:v,platforms,period:currentPeriod,focusQ:val('focusQ'),name:val('contactName'),email:val('contactEmail'),customInterest:document.getElementById('customQ').checked,submittedAt:new Date().toISOString()};
+  if(v==='location')Object.assign(base,{bizName:val('loc-name'),bizType:val('loc-type'),city:val('loc-city'),state:val('loc-state'),website:val('loc-website')});
+  if(v==='product')Object.assign(base,{bizName:val('prod-name'),offer:val('prod-offer'),city:val('prod-city'),state:val('prod-state'),category:val('prod-cat'),sku:val('prod-sku'),website:val('prod-website')});
+  if(v==='digital')Object.assign(base,{bizName:val('dig-name'),offer:val('dig-offer'),city:val('dig-city'),state:val('dig-state'),digType:val('dig-type'),website:val('dig-website')});
+  return base;
+}
+function submitForm(){
+  if(!validate())return;
+  const btn=document.getElementById('submitBtn');btn.textContent='Processing...';btn.classList.add('loading');
+  const data=buildData();
+
+  // POST order data to Formspree
+  // TODO: replace with real Formspree endpoint
+  fetch('https://formspree.io/f/YOURCODE', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(data)
+  }).catch(()=>{}); // fire and forget — don't block UX on network error
+
+  const pLabels={'1mo':'Last 1 month','3mo':'Last 3 months','6mo':'Last 6 months','1yr':'Last 1 year'};
+  const vLabels={'location':'Physical location','product':'Product / brand','digital':'Software or service'};
+  setTimeout(()=>{
+    // [fake success state — disabled; real flow redirects to Stripe below]
+    // document.getElementById('mainForm').style.display='none';
+    // const sc=document.getElementById('successCard');sc.style.display='block';sc.style.animation='fadeUp .4s ease both';window.scrollTo({top:0,behavior:'smooth'});
+    // document.getElementById('sucDetail').innerHTML=`<div class="suc-row"><span class="k">Business</span><span class="v">${data.bizName}</span></div><div class="suc-row"><span class="k">Type</span><span class="v">${vLabels[data.vertical]}</span></div><div class="suc-row"><span class="k">Platforms</span><span class="v">${data.platforms.join(', ')}</span></div><div class="suc-row"><span class="k">Time period</span><span class="v">${pLabels[data.period]}</span></div><div class="suc-row"><span class="k">Delivering to</span><span class="v">${data.email}</span></div><div class="suc-row"><span class="k">Expected delivery</span><span class="v">Within 48 hours</span></div><div class="suc-row"><span class="k">Amount</span><span class="v">$29</span></div>`;
+    // Redirect to Stripe payment link — replace with your actual Stripe link
+    // TODO: replace with real Stripe payment link
+    window.location.href = 'https://buy.stripe.com/YOURSTRIPELINK';
+  },900);
+}
+function joinWaitlist(){const email=document.getElementById('waitlistEmail').value.trim();if(!email||!email.includes('@'))return;document.getElementById('waitlistCard').innerHTML=`<div style="padding:8px 0"><div style="font-size:26px;margin-bottom:12px">✓</div><h2 style="font-size:20px;font-weight:600;color:var(--text-1);margin-botto

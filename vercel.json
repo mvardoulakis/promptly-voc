@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/create-checkout.js": { "maxDuration": 10 },
+    "api/webhook.js": { "maxDuration": 10 },
+    "api/approve.js": { "maxDuration": 10 }
+  }
+}

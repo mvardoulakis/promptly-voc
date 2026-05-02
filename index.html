@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promptly Voice of Customer — Know What Your Reviews Are Really Saying</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Backgrounds */
+  --page:    #F8F9FC;
+  --surface: #EEF2FF;
+  --surface-2:#E0E7FF;
+  --white:   #FFFFFF;
+
+  /* Blue system — Promptly's accent */
+  --blue:      #2563EB;
+  --blue-dark: #1D4ED8;
+  --blue-deep: #1E3A8A;
+  --blue-faint:rgba(37,99,235,0.07);
+  --blue-faint2:rgba(37,99,235,0.13);
+  --blue-border:rgba(37,99,235,0.2);
+
+  /* Text */
+  --text-1: #0F172A;
+  --text-2: #475569;
+  --text-3: #94A3B8;
+
+  /* Borders */
+  --border:  rgba(0,0,0,0.07);
+  --border-2:rgba(0,0,0,0.12);
+
+  /* Danger */
+  --red-faint:rgba(185,50,40,0.06);
+  --red-border:rgba(185,50,40,0.18);
+
+  --sans:'Outfit',system-ui,sans-serif;
+  --r:8px;--rl:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--page);color:var(--text-1);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,249,252,.95);backdrop-filter:blur(16px);border-bottom:.5px solid var(--border)}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-mark{width:28px;height:28px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-logo-mark svg{width:16px;height:16px}
+.nav-logo-text{font-size:16px;font-weight:600;color:var(--text-1);letter-spacing:-.01em}
+.nav-logo-text span{color:var(--blue)}
+.nav-product{font-size:11px;color:var(--text-3);letter-spacing:.5px;margin-left:2px;font-weight:400}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13px;color:var(--text-2);text-decoration:none;transition:color .2s;font-weight:400}
+.nav-links a:hover{color:var(--text-1)}
+.nav-cta{font-size:13px;font-weight:500;color:var(--white);background:var(--blue);padding:9px 20px;border-radius:var(--r);text-decoration:none;transition:background .2s,transform .15s}
+.nav-cta:hover{background:var(--blue-dark);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 90px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 800px 600px at 75% 40%,rgba(37,99,235,.06) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 5% 80%,rgba(37,99,235,.04) 0%,transparent 60%)}
+.hero-grid{position:absolute;inset:0;pointer-events:none;opacity:.025;background-image:linear-gradient(rgba(0,0,0,1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,1) 1px,transparent 1px);background-size:52px 52px}
+.hero-inner{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);background:var(--blue-faint);border:.5px solid var(--blue-border);padding:5px 12px;border-radius:100px;margin-bottom:20px}
+.tag-dot{width:5px;height:5px;border-radius:50%;background:var(--blue)}
+h1{font-size:54px;line-height:1.07;font-weight:600;color:var(--text-1);margin-bottom:20px;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--blue)}
+.hero-sub{font-size:17px;color:var(--text-2);line-height:1.72;margin-bottom:32px;max-width:460px;font-weight:300}
+.hero-cta-row{display:flex;align-items:center;gap:14px;margin-bottom:32px}
+.btn-primary{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--white);background:var(--blue);padding:13px 26px;border-radius:var(--r);text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s;display:inline-block;letter-spacing:-.01em}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.trust-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.trust-item{font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:6px;font-weight:400}
+.trust-check{width:14px;height:14px;border-radius:50%;background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--blue);flex-shrink:0}
+
+/* Vertical pills */
+.vert-toggle{margin-top:28px}
+.vert-label{font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:10px}
+.vert-pills{display:flex;gap:7px;flex-wrap:wrap}
+.vpill{font-size:12px;font-weight:400;padding:7px 14px;border-radius:100px;border:.5px solid var(--border-2);color:var(--text-2);cursor:pointer;transition:all .18s;background:var(--white);font-family:var(--sans)}
+.vpill:hover,.vpill.active{border-color:var(--blue-border);color:var(--blue-deep);background:var(--blue-faint);font-weight:500}
+
+/* ── BRIEF PREVIEW ── */
+.brief-preview{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.09),0 4px 16px rgba(0,0,0,.05)}
+.bp-hdr{padding:13px 18px;border-bottom:.5px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between}
+.bp-logo{font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:-.01em}
+.bp-logo span{color:var(--blue)}
+.bp-badge{font-size:10px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;color:var(--blue);background:var(--blue-faint);border:.5px solid var(--blue-border);padding:3px 9px;border-radius:4px}
+.bp-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:.5px solid var(--border)}
+.bm{background:var(--white);padding:13px 10px;text-align:center}
+.bm-v{font-size:18px;font-weight:600;color:var(--text-1);line-height:1;margin-bottom:3px}
+.bm-l{font-size:10px;color:var(--text-3);line-height:1.3}
+.bp-body{padding:14px 18px;background:var(--white)}
+.bp-row-lbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:9px;font-weight:500}
+.brow{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.bname{width:82px;font-size:11px;color:var(--text-2);flex-shrink:0}
+.btrack{flex:1;height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px}
+.bfill.pos{background:var(--blue)}
+.bfill.neg{background:rgba(185,50,40,.5)}
+.bval{font-size:11px;color:var(--text-2);width:36px;text-align:right}
+/* Leakage */
+.bp-leakage{padding:13px 18px;background:rgba(185,50,40,.03);border-top:.5px solid var(--border)}
+.bpl-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.bpl-lbl{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:rgba(185,50,40,.7);font-weight:500}
+.bpl-amt{font-size:17px;font-weight:600;color:rgba(185,50,40,.85)}
+.bpl-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bpl-theme{font-size:11px;color:var(--text-2);width:130px;flex-shrink:0}
+.bpl-track{flex:1;height:4px;background:rgba(185,50,40,.1);border-radius:2px;overflow:hidden}
+.bpl-bar{height:100%;border-radius:2px;background:rgba(185,50,40,.4);transition:width .5s ease}
+.bpl-val{font-size:11px;color:rgba(185,50,40,.75);font-weight:500;width:56px;text-align:right;flex-shrink:0}
+.bpl-fn{font-size:10px;color:var(--text-3);margin-top:8px;font-style:italic}
+/* Actions */
+.bp-actions{padding:13px 18px;border-top:.5px solid var(--border);background:rgba(37,99,235,.025)}
+.bpa-lbl{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);font-weight:500;margin-bottom:9px}
+.bpa-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px}
+.bpa-row:last-child{margin-bottom:0}
+.bpa-num{width:17px;height:17px;border-radius:50%;background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--blue);flex-shrink:0;margin-top:1px}
+.bpa-text{font-size:11px;color:var(--text-2);line-height:1.5}
+
+/* ── PROOF BAR ── */
+.proof-bar{background:var(--surface);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border);padding:18px 48px}
+.proof-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
+.proof-item{font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:7px}
+.proof-item strong{color:var(--text-2);font-weight:500}
+.proof-sep{width:1px;height:14px;background:var(--border-2)}
+
+/* ── SHARED SECTION ── */
+section{padding:96px 48px}
+.si{max-width:1180px;margin:0 auto}
+.sec-tag{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.sec-tag-line{width:20px;height:1.5px;background:var(--blue);opacity:.6}
+h2{font-size:40px;font-weight:600;color:var(--text-1);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+h2 em{font-style:normal;color:var(--blue)}
+.sec-sub{font-size:16px;color:var(--text-2);line-height:1.72;max-width:560px;margin-bottom:56px;font-weight:300}
+
+/* ── DIFFERENTIATORS ── */
+.diff-sec{background:var(--white);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.diff-card{background:var(--white);padding:32px 28px}
+.diff-icon{width:40px;height:40px;border-radius:var(--r);background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:18px}
+.diff-card h3{font-size:20px;font-weight:600;color:var(--text-1);line-height:1.2;margin-bottom:10px;letter-spacing:-.01em}
+.diff-card h3 em{font-style:normal;color:var(--blue)}
+.diff-card p{font-size:14px;color:var(--text-2);line-height:1.7;font-weight:300}
+.diff-pill{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:5px 12px;background:var(--blue-faint);border:.5px solid var(--blue-border);border-radius:100px;font-size:11px;color:var(--blue-deep);font-weight:500}
+.diff-pill-dot{width:4px;height:4px;border-radius:50%;background:var(--blue)}
+
+/* ── HOW IT WORKS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:.5px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.step{background:var(--white);padding:32px 28px;position:relative}
+.step-num{font-size:48px;font-weight:600;color:rgba(37,99,235,.07);line-height:1;position:absolute;top:20px;right:20px;letter-spacing:-.03em}
+.step-icon{width:38px;height:38px;border-radius:var(--r);background:var(--blue-faint);border:.5px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:18px}
+.step h3{font-size:16px;font-weight:600;color:var(--text-1);margin-bottom:9px;letter-spacing:-.01em}
+.step p{font-size:13px;color:var(--text-2);line-height:1.65;font-weight:300}
+
+/* ── WHAT'S INSIDE ── */
+.inside-sec{background:var(--surface);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+.inside-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ic{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:20px 18px;transition:border-color .2s,transform .2s}
+.ic:hover{border-color:var(--blue-border);transform:translateY(-2px)}
+.ic.hl-blue{border-color:var(--blue-border);background:linear-gradient(145deg,var(--white) 0%,var(--blue-faint) 100%)}
+.ic.hl-red{border-color:rgba(185,50,40,.15);background:linear-gradient(145deg,var(--white) 0%,rgba(185,50,40,.03) 100%)}
+.ic-icon{font-size:20px;margin-bottom:11px}
+.ic-title{font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:7px;line-height:1.3;letter-spacing:-.01em}
+.ic-body{font-size:12px;color:var(--text-2);line-height:1.65;font-weight:300}
+.ic-badge{display:inline-block;margin-top:10px;font-size:10px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:var(--blue-deep);background:var(--blue-faint);border:.5px solid var(--blue-border);padding:3px 8px;border-radius:4px}
+
+/* ── PRICING ── */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
+.pcard{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:26px 24px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.pcard:hover{border-color:var(--blue-border);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.06)}
+.pcard.feat{border-color:var(--blue-border);border-width:1.5px}
+.ptier{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-3);font-weight:500;margin-bottom:9px}
+.pamount{font-size:44px;font-weight:600;color:var(--text-1);line-height:1;margin-bottom:3px;letter-spacing:-.02em}
+.pamount sup{font-size:20px;font-weight:500;vertical-align:top;margin-top:7px;display:inline-block}
+.pperiod{font-size:12px;color:var(--text-3);margin-bottom:16px}
+.pdesc{font-size:13px;color:var(--text-2);line-height:1.55;margin-bottom:16px;padding-bottom:16px;border-bottom:.5px solid var(--border);font-weight:300}
+.pfeats{list-style:none;margin-bottom:22px}
+.pfeats li{font-size:13px;color:var(--text-2);padding:5px 0;display:flex;align-items:flex-start;gap:9px;line-height:1.4;font-weight:300}
+.pfeats li::before{content:'·';color:var(--blue);flex-shrink:0;font-weight:600}
+.pcta{display:block;text-align:center;font-size:13px;font-weight:500;padding:11px 20px;border-radius:var(--r);text-decoration:none;transition:all .2s;cursor:pointer;border:none;font-family:var(--sans)}
+.pcta.pri{background:var(--blue);color:var(--white)}
+.pcta.pri:hover{background:var(--blue-dark)}
+.pcta.out{background:transparent;color:var(--text-2);border:.5px solid var(--border-2)}
+.pcta.out:hover{border-color:var(--blue-border);color:var(--blue-deep)}
+.pnote{text-align:center;font-size:11px;color:var(--text-3);margin-top:9px}
+
+/* ── WHO IT'S FOR ── */
+.vert-sec{background:var(--surface);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.vcard{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:26px 22px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.vcard:hover{border-color:var(--blue-border);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.vi{font-size:26px;margin-bottom:14px}
+.vcard h3{font-size:15px;font-weight:600;color:var(--text-1);margin-bottom:7px;letter-spacing:-.01em}
+.vcard p{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:14px;font-weight:300}
+.vsrcs{display:flex;flex-wrap:wrap;gap:5px}
+.stag{font-size:10px;color:var(--text-3);background:var(--surface);border:.5px solid var(--border);padding:3px 8px;border-radius:4px}
+
+/* ── TESTIMONIALS ── */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tcard{background:var(--white);border:.5px solid var(--border);border-radius:var(--rl);padding:26px 22px}
+.tmark{color:var(--blue);font-size:12px;margin-bottom:14px;letter-spacing:3px;opacity:.6}
+.ttext{font-size:15px;color:var(--text-1);line-height:1.65;margin-bottom:18px;font-weight:300;font-style:italic}
+.tauth{font-size:12px;color:var(--text-3)}
+.tauth strong{color:var(--text-2);font-weight:500;display:block}
+
+/* ── FINAL CTA ── */
+.fcta{text-align:center;background:var(--surface);border-top:.5px solid var(--border)}
+.fcta h2{max-width:560px;margin:0 auto 14px}
+.fcta .sub{max-width:460px;margin:0 auto 32px;font-size:15px;color:var(--text-2);font-weight:300}
+.fnote{margin-top:16px;font-size:12px;color:var(--text-3)}
+
+/* ── CONTACT ── */
+.contact-sec{background:var(--white);border-top:.5px solid var(--border)}
+.contact-inner{max-width:560px;margin:0 auto}
+.cform{background:var(--surface);border:.5px solid var(--border);border-radius:var(--rl);padding:26px}
+.cform-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
+.cfield label{display:block;font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:6px}
+.cfield input,.cfield textarea{width:100%;background:var(--white);border:.5px solid var(--border);border-radius:var(--r);padding:10px 13px;font-family:var(--sans);font-size:13px;color:var(--text-1);outline:none;transition:border-color .2s}
+.cfield input:focus,.cfield textarea:focus{border-color:var(--blue-border)}
+.cfield input::placeholder,.cfield textarea::placeholder{color:var(--text-3);font-size:13px}
+.cfield textarea{resize:vertical;min-height:90px;line-height:1.6}
+.cbtn{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s;margin-top:13px}
+.cbtn:hover{background:var(--blue-dark)}
+.cconfirm{display:none;text-align:center;font-size:13px;color:var(--text-2);margin-top:13px;font-weight:300}
+
+/* ── FOOTER ── */
+footer{background:var(--page);border-top:.5px solid var(--border);padding:32px 48px}
+.footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.foot-logo{font-size:15px;font-weight:600;color:var(--text-1);letter-spacing:-.01em}
+.foot-logo span{color:var(--blue)}
+.foot-product{font-size:11px;color:var(--text-3);margin-top:2px}
+.flinks{display:flex;gap:22px}
+.flinks a{font-size:12px;color:var(--text-3);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--text-2)}
+.fcopy{font-size:12px;color:var(--text-3)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fadeUp .55s ease both}
+.d1{animation-delay:.06s;opacity:0}.d2{animation-delay:.14s;opacity:0}.d3{animation-delay:.22s;opacity:0}.d4{animation-delay:.30s;opacity:0}.d5{animation-delay:.42s;opacity:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .diff-grid,.steps-grid,.inside-grid,.vgrid,.tgrid{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr}
+  .bp-metrics{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:38px}h2{font-size:32px}
+  nav{padding:14px 20px}section{padding:72px 20px}
+  .proof-bar{padding:18px 20px}
+  footer{padding:28px 20px}.footer-inner{flex-direction:column;gap:16px;text-align:center}
+  .hero{padding:120px 24px 80px}
+  .contact-inner{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  h1{font-size:30px;line-height:1.1}
+  h2{font-size:24px}
+  .hero{padding:100px 16px 60px;min-height:auto}
+  .hero-sub{font-size:15px}
+  .hero-cta-row{flex-direction:column;align-items:flex-start;gap:10px}
+  .btn-primary{width:100%;text-align:center}
+  .trust-row{gap:12px}
+  .vert-pills{gap:6px}
+  .vpill{font-size:11px;padding:6px 12px}
+  nav{padding:12px 16px}
+  .nav-links{display:none}
+  section{padding:56px 16px}
+  .proof-bar{padding:14px 16px}
+  .proof-inner{gap:14px;flex-direction:column;align-items:flex-start}
+  .proof-sep{display:none}
+  .diff-card,.step{padding:22px 18px}
+  .ic{padding:16px 14px}
+  .inside-grid{grid-template-columns:1fr 1fr}
+  .pcard{padding:20px 18px}
+  .pamount{font-size:36px}
+  .vcard{padding:20px 16px}
+  .tcard{padding:20px 18px}
+  .bp-metrics{grid-template-columns:repeat(2,1fr)}
+  .bm{padding:10px 6px}
+  .bm-v{font-size:15px}
+  .bm-l{font-size:9px}
+  .flinks{flex-direction:column;gap:10px;align-items:center}
+  .cform-row{grid-template-columns:1fr}
+  .cbtn{width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/logo.png" alt="Promptly VoC" style="height:36px;width:auto">
+  </a>
+  <div class="nav-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#whats-inside">What's inside</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="/voc/order" class="nav-cta">Order a brief →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="tag fi d1"><div class="tag-dot"></div>Voice of Customer Briefs</div>
+      <h1 class="fi d2">Your reviews are hiding <em>lost revenue.</em></h1>
+      <p class="hero-sub fi d3">Promptly analyzes hundreds of your most recent customer reviews, calculates what recurring complaints are costing you in lost repeat business, and delivers a prioritized action plan — reviewed by a human analyst before it reaches you.</p>
+      <div class="hero-cta-row fi d4">
+        <a href="/voc/order" class="btn-primary">Order your brief — $29</a>
+      </div>
+      <div class="trust-row fi d5">
+        <div class="trust-item"><div class="trust-check">✓</div>Expert-reviewed, not just AI-generated</div>
+        <div class="trust-item"><div class="trust-check">✓</div>Delivered within 48 hours</div>
+        <div class="trust-item"><div class="trust-check">✓</div>$29 · no subscription required</div>
+      </div>
+      <div class="vert-toggle fi d5">
+        <div class="vert-label">Select your business type</div>
+        <div class="vert-pills">
+          <button class="vpill active" onclick="setPreview('location',this)">📍 Physical location</button>
+          <button class="vpill" onclick="setPreview('product',this)">📦 Product or brand</button>
+          <button class="vpill" onclick="setPreview('digital',this)">💻 Software or service</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRIEF PREVIEW -->
+    <div class="brief-preview fi d4">
+      <div class="bp-hdr">
+        <div class="bp-logo">Promptly<span>.</span></div>
+        <div class="bp-badge">March 2026</div>
+      </div>
+      <div class="bm" style="padding:12px 18px;border-bottom:.5px solid var(--border);background:var(--white)">
+        <div style="font-size:11px;color:var(--text-3);font-weight:500" id="ptitle">Sample Hotel · Voice of Customer Brief</div>
+      </div>
+      <div class="bp-metrics">
+        <div class="bm"><div class="bm-v" id="bm1">4.55</div><div class="bm-l">Composite Score</div></div>
+        <div class="bm"><div class="bm-v" id="bm2">86%</div><div class="bm-l">Positive Sentiment</div></div>
+        <div class="bm"><div class="bm-v" id="bm3">#27</div><div class="bm-l" id="bm3l">TripAdvisor Rank</div></div>
+        <div class="bm"><div class="bm-v" id="bm4">9.4</div><div class="bm-l" id="bm4l">Booking.com</div></div>
+      </div>
+      <div class="bp-body">
+        <div class="bp-row-lbl">Sentiment by theme</div>
+        <div class="brow"><div class="bname" id="t1">Service</div><div class="btrack"><div class="bfill pos" id="b1" style="width:91%"></div></div><div class="bval" id="v1">91%</div></div>
+        <div class="brow"><div class="bname" id="t2">Location</div><div class="btrack"><div class="bfill pos" id="b2" style="width:88%"></div></div><div class="bval" id="v2">88%</div></div>
+        <div class="brow"><div class="bname" id="t3">Cleanliness</div><div class="btrack"><div class="bfill pos" id="b3" style="width:79%"></div></div><div class="bval" id="v3">79%</div></div>
+        <div class="brow"><div class="bname" id="t4">Value</div><div class="btrack"><div class="bfill neg" id="b4" style="width:34%"></div></div><div class="bval" id="v4" style="color:rgba(185,50,40,.7)">−34%</div></div>
+      </div>
+      <div class="bp-leakage">
+        <div class="bpl-hdr">
+          <div class="bpl-lbl">💰 Revenue leakage estimate</div>
+          <div class="bpl-amt" id="leakBadge">$4,800/mo</div>
+        </div>
+        <div class="bpl-row"><div class="bpl-theme" id="lr1t">Slow check-in</div><div class="bpl-track"><div class="bpl-bar" id="lr1b" style="width:72%"></div></div><div class="bpl-val" id="lr1v">$2,400/mo</div></div>
+        <div class="bpl-row"><div class="bpl-theme" id="lr2t">Room noise</div><div class="bpl-track"><div class="bpl-bar" id="lr2b" style="width:48%"></div></div><div class="bpl-val" id="lr2v">$1,600/mo</div></div>
+        <div class="bpl-row"><div class="bpl-theme" id="lr3t">Breakfast quality</div><div class="bpl-track"><div class="bpl-bar" id="lr3b" style="width:24%"></div></div><div class="bpl-val" id="lr3v">$800/mo</div></div>
+        <div class="bpl-fn">Directional estimate based on review frequency and category-average repeat rates</div>
+      </div>
+      <div class="bp-actions">
+        <div class="bpa-lbl">✅ Top action items — ranked by impact</div>
+        <div class="bpa-row"><div class="bpa-num">1</div><div class="bpa-text" id="a1">Implement express check-in — addresses top complaint, high impact, low cost</div></div>
+        <div class="bpa-row"><div class="bpa-num">2</div><div class="bpa-text" id="a2">Audit room allocations near elevator — directly reduces noise complaints</div></div>
+        <div class="bpa-row"><div class="bpa-num">3</div><div class="bpa-text" id="a3">Refresh breakfast with 2–3 local items — converts a detractor theme to neutral</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-inner">
+    <div class="proof-item">Analyzes <strong>Google · Amazon · TripAdvisor · G2 · Yelp · Trustpilot · and more</strong></div>
+    <div class="proof-sep"></div>
+    <div class="proof-item">Up to <strong>500 reviews analyzed</strong> per platform</div>
+    <div class="proof-sep"></div>
+    <div class="proof-item">Every brief <strong>human-reviewed</strong> before delivery</div>
+    <div class="proof-sep"></div>
+    <div class="proof-item">Delivered in <strong>48 hours</strong></div>
+  </div>
+</div>
+
+<!-- DIFFERENTIATORS -->
+<section class="diff-sec">
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>Why Promptly VoC</div>
+    <h2>What makes this different from <em>similar solutions</em></h2>
+    <p class="sec-sub">Most review tools show you a score. Promptly VoC tells you what it's costing you, what to fix, and has a human verify the work before it reaches you.</p>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-icon">💰</div>
+        <h3>We put a <em>dollar figure</em> on your complaints</h3>
+        <p>Most operators know they have a recurring problem. What they don't know is what it's costing them. We estimate the revenue lost to each friction theme in repeat business, so you know exactly what fixing it is worth.</p>
+        <div class="diff-pill"><div class="diff-pill-dot"></div>Revenue leakage estimate in every brief</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">✅</div>
+        <h3>You get a <em>to-do list,</em> not a dashboard</h3>
+        <p>Sentiment scores are interesting. A ranked list of what to fix, in what order, with enough specificity to act on tomorrow — that's useful. Every brief ends with a prioritized action plan built around impact and effort.</p>
+        <div class="diff-pill"><div class="diff-pill-dot"></div>Prioritized action plan in every brief</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-icon">🔍</div>
+        <h3>A human reads it <em>before you do</em></h3>
+        <p>AI is fast. It's also wrong in ways that are hard to catch — misread tone, misattributed themes. Every brief goes through an analyst review before it ships. They remove anything misleading and verify every finding.</p>
+        <div class="diff-pill"><div class="diff-pill-dot"></div>Human analyst review on every brief</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>How it works</div>
+    <h2>From scattered reviews to <em>clear action</em></h2>
+    <p class="sec-sub">No software to install. No integrations. No onboarding call. Tell us about your business and we do the rest.</p>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">01</div><div class="step-icon">📍</div><h3>Tell us about your business</h3><p>Share your business name, what you sell, the review platforms you're on, and any specific questions you want answered. The more context, the sharper the brief.</p></div>
+      <div class="step"><div class="step-num">02</div><div class="step-icon">🤖</div><h3>AI analyzes your reviews</h3><p>We pull and synthesize up to 500 of your most recent reviews per platform — scoring sentiment, surfacing friction themes, estimating revenue leakage, and calculating your industry benchmark.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon">🔍</div><h3>An analyst reviews every finding</h3><p>A Promptly analyst reads the output, removes anything misleading or inaccurate, and adjusts language to reflect your specific business context. No AI slop ships.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section id="whats-inside" class="inside-sec">
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>What's inside</div>
+    <h2>A brief that reads like a <em>consultant wrote it</em></h2>
+    <p class="sec-sub">Seven sections. Every one built to answer a specific question your team is already asking.</p>
+    <div class="inside-grid">
+      <div class="ic hl-blue"><div class="ic-icon">📊</div><div class="ic-title">Executive summary</div><div class="ic-body">Composite score, positive sentiment %, and a plain-English narrative — written to share with leadership without interpretation required.</div></div>
+      <div class="ic"><div class="ic-icon">🔍</div><div class="ic-title">Platform breakdown</div><div class="ic-body">Each platform scored separately. Spot where weak ratings are concentrated before they drag down your overall average.</div></div>
+      <div class="ic"><div class="ic-icon">💬</div><div class="ic-title">Sentiment by theme</div><div class="ic-body">What customers consistently praise and what they flag — by theme with trend direction. Not just a score. The story behind it.</div></div>
+      <div class="ic hl-red"><div class="ic-icon">💰</div><div class="ic-title">Revenue leakage estimate</div><div class="ic-body">Every recurring complaint translated into a dollar estimate — what it's costing you in lost repeat business each month.</div><div class="ic-badge">Unique to Promptly VoC</div></div>
+      <div class="ic"><div class="ic-icon">⚡</div><div class="ic-title">Verbatim friction findings</div><div class="ic-body">The exact language your customers use — not a sanitized summary. The phrases that show up again and again are the ones worth fixing.</div></div>
+      <div class="ic hl-blue"><div class="ic-icon">✅</div><div class="ic-title">Prioritized action plan</div><div class="ic-body">A ranked list of what to fix, in what order — built around impact and effort. Specific enough to act on the day the brief arrives.</div><div class="ic-badge">Unique to Promptly VoC</div></div>
+      <div class="ic"><div class="ic-icon">🏁</div><div class="ic-title">Industry benchmark</div><div class="ic-body">How your ratings compare to similar businesses in your category — so you know whether a 4.2 is strong or weak for your market.</div></div>
+    </div>
+    <div style="text-align:center;margin-top:36px"><a href="/voc/order" class="btn-primary">Get your brief — $29</a></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>Pricing</div>
+    <h2>Simple pricing. <em>No surprises.</em></h2>
+    <p class="sec-sub">Start with a Snapshot. If you want more — recurring analysis, multiple locations, white-label output — we'll scope something together.</p>
+    <div class="pgrid">
+      <div class="pcard feat">
+        <div class="ptier">Snapshot</div>
+        <div class="pamount"><sup>$</sup>29</div>
+        <div class="pperiod">one-time · per location · no subscription</div>
+        <div class="pdesc">A full intelligence brief delivered once. No card on file after purchase. The lowest-risk way to see what your reviews are actually saying.</div>
+        <ul class="pfeats">
+          <li>Full 7-section intelligence brief</li>
+          <li>Up to 3 review platforms</li>
+          <li>Up to 500 most recent reviews</li>
+          <li>Revenue leakage estimate</li>
+          <li>Prioritized action plan</li>
+          <li>Industry benchmark</li>
+          <li>Human analyst review included</li>
+          <li>Delivered within 48 hours</li>
+        </ul>
+        <a href="/voc/order" class="pcta pri">Order a Snapshot →</a>
+        <p class="pnote">No ongoing commitment · Cancel nothing</p>
+      </div>
+      <div class="pcard">
+        <div class="ptier">Custom</div>
+        <div class="pamount" style="font-size:32px;padding-top:6px;letter-spacing:-.01em">Let's talk</div>
+        <div class="pperiod">scoped to what you actually need</div>
+        <div class="pdesc">Need more than a one-time brief? We'll build the right engagement around your specific situation.</div>
+        <ul class="pfeats">
+          <li>Multiple locations or products</li>
+          <li>Up to 7 platforms analyzed</li>
+          <li>Competitor benchmarking</li>
+          <li>Recurring analysis</li>
+          <li>White-label output</li>
+          <li>Dedicated analyst support</li>
+          <li>Flexible cadence and scope</li>
+        </ul>
+        <a href="#contact" class="pcta out">Get in touch →</a>
+        <p class="pnote">We'll respond within one business day</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section id="verticals" class="vert-sec">
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>Who it's for</div>
+    <h2>Built for operators, not <em>enterprise IT teams</em></h2>
+    <p class="sec-sub">If your customers leave reviews, Promptly VoC can analyze them. We work across physical locations, consumer products, and digital businesses.</p>
+    <div class="vgrid">
+      <div class="vcard"><div class="vi">📍</div><h3>Physical locations</h3><p>Hotels, restaurants, retail stores, spas, bars, attractions. Any business where customers visit in person and leave reviews about their experience.</p><div class="vsrcs"><span class="stag">Google</span><span class="stag">TripAdvisor</span><span class="stag">Yelp</span><span class="stag">Booking.com</span><span class="stag">OpenTable</span></div></div>
+      <div class="vcard"><div class="vi">📦</div><h3>Products & brands</h3><p>CPG brands, ecommerce companies, food & beverage, beauty, apparel. Any product where customers review what they bought.</p><div class="vsrcs"><span class="stag">Amazon</span><span class="stag">Google</span><span class="stag">Trustpilot</span><span class="stag">Facebook</span></div></div>
+      <div class="vcard"><div class="vi">💻</div><h3>Software & services</h3><p>SaaS tools, mobile apps, agencies, professional services. Any digital product where customers review their experience online.</p><div class="vsrcs"><span class="stag">G2</span><span class="stag">Capterra</span><span class="stag">Trustpilot</span><span class="stag">App Store</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="si">
+    <div class="sec-tag"><div class="sec-tag-line"></div>From the businesses we've worked with</div>
+    <h2>Results from <em>the field</em></h2>
+    <p class="sec-sub">Operators who act on their briefs see measurable improvements in ratings, revenue, and repeat business.</p>
+    <div class="tgrid">
+      <div class="tcard"><div class="tmark">★ ★ ★ ★ ★</div><div class="ttext">"The revenue leakage section alone paid for the next two years of briefs. We had no idea one recurring complaint theme was costing us that much in lost repeat business."</div><div class="tauth"><strong>General Manager</strong>Boutique Hotel · Southeast US</div></div>
+      <div class="tcard"><div class="tmark">★ ★ ★ ★ ★</div><div class="ttext">"I used to spend Sunday mornings reading reviews and taking notes. The brief gives me the same output in a fraction of the time — and tells me exactly what to prioritize."</div><div class="tauth"><strong>Owner / Operator</strong>3-Location Restaurant Group</div></div>
+      <div class="tcard"><div class="tmark">★ ★ ★ ★ ★</div><div class="ttext">"We were using another tool for two years and barely looked at it. This gives us one document we actually read and act on. Our ratings improved measurably within 90 days."</div><div class="tauth"><strong>Director of Operations</strong>Independent Hotel Group</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="fcta">
+  <div class="si">
+    <div class="sec-tag" style="justify-content:center"><div class="sec-tag-line"></div>Get started</div>
+    <h2>Find out what your reviews are <em>costing you</em></h2>
+    <p class="sub">A Snapshot brief is $29. No subscription, no software, no onboarding call. Tell us about your business and we'll have an analyst-reviewed brief in your inbox within 48 hours.</p>
+    <a href="/voc/order" class="btn-primary">Order a brief — $29</a>
+    <p class="fnote">Full brief — $29 · No subscription required</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-sec">
+  <div class="si">
+    <div class="contact-inner">
+      <div class="sec-tag"><div class="sec-tag-line"></div>Contact</div>
+      <h2>Want to partner on <em>custom insights?</em></h2>
+      <p class="sec-sub" style="margin-bottom:28px">Need deeper coverage, recurring analysis, white-label briefs, or something else — tell us what you're trying to solve and we'll figure out the right engagement together.</p>
+      <div class="cform">
+        <form action="https://formspree.io/f/YOURCODE" method="POST" style="display:contents">
+        <div class="cform-row">
+          <div class="cfield"><label>Your name</label><input type="text" name="name" id="ctName" placeholder="Your name"></div>
+          <div class="cfield"><label>Work email</label><input type="email" name="email" id="ctEmail" placeholder="you@yourbusiness.com"></div>
+        </div>
+        <div class="cfield"><label>What are you trying to solve?</label><textarea name="message" id="ctMsg" placeholder="e.g. We have 12 locations and need briefs across all of them. We need white-label reports for our consulting clients..."></textarea></div>
+        <button class="cbtn" type="submit">Send message →</button>
+        </form>
+        <p class="cconfirm" id="ctConfirm">Thanks — we'll be in touch within one business day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <img src="/logo.png" alt="Promptly VoC" style="height:28px;width:auto">
+    </div>
+    <div class="flinks">
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#verticals">Who it's for</a>
+      <a href="#contact">Contact</a>
+      <a href="https://promptlyconsulting.com">promptlyconsulting.com</a>
+    </div>
+    <div class="fcopy">© 2026 Promptly Consulting LLC</div>
+  </div>
+</footer>
+
+<script>
+// ── PREVIEW DATA ──
+const previewData={
+  location:{title:'Sample Hotel · Voice of Customer Brief',metrics:['4.55','86%','#27','9.4'],m3l:'TripAdvisor Rank',m4l:'Booking.com',themes:['Service','Location','Cleanliness','Value'],bars:[91,88,79,-34],leakTotal:'$4,800/mo',leakage:[{t:'Slow check-in',p:72,v:'$2,400/mo'},{t:'Room noise',p:48,v:'$1,600/mo'},{t:'Breakfast quality',p:24,v:'$800/mo'}],actions:['Implement express check-in — addresses top complaint, high impact, low cost','Audit room allocations near elevator — directly reduces noise complaints','Refresh breakfast with 2–3 local items — converts a detractor theme to neutral']},
+  product:{title:'Sample Brand · Voice of Customer Brief',metrics:['4.1','76%','4,200','4.0'],m3l:'Total Reviews',m4l:'Amazon Rating',themes:['Quality','Packaging','Value','Shipping'],bars:[82,71,68,-38],leakTotal:'$3,200/mo',leakage:[{t:'Packaging damage',p:68,v:'$1,800/mo'},{t:'Value perception',p:42,v:'$900/mo'},{t:'Late delivery',p:19,v:'$500/mo'}],actions:['Switch to double-wall corrugated — eliminates #1 complaint at ~$0.08/unit','Add price-per-unit comparison on product page — addresses value perception','Audit 3PL handling — late delivery complaints cluster around one fulfillment centre']},
+  digital:{title:'Sample SaaS · Voice of Customer Brief',metrics:['4.2','79%','3.8','4.1'],m3l:'G2 Rating',m4l:'Capterra Rating',themes:['Ease of use','Features','Support','Onboarding'],bars:[84,78,72,-42],leakTotal:'$6,400/mo',leakage:[{t:'Onboarding friction',p:74,v:'$3,200/mo'},{t:'Support response',p:46,v:'$2,100/mo'},{t:'Missing integrations',p:21,v:'$1,100/mo'}],actions:['Build interactive onboarding checklist — confusion in first 7 days is top churn driver','Add live chat during business hours — "waited days for a reply" in 23% of negative reviews','Prioritise Zapier + HubSpot integrations — named in 14% of feature request reviews']}
+};
+
+function setPreview(key,el){
+  document.querySelectorAll('.vpill').forEach(p=>p.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const d=previewData[key];
+  document.getElementById('ptitle').textContent=d.title;
+  ['bm1','bm2','bm3','bm4'].forEach((id,i)=>document.getElementById(id).textContent=d.metrics[i]);
+  document.getElementById('bm3l').textContent=d.m3l;
+  document.getElementById('bm4l').textContent=d.m4l;
+  ['t1','t2','t3','t4'].forEach((id,i)=>document.getElementById(id).textContent=d.themes[i]);
+  [1,2,3,4].forEach(i=>{
+    const v=d.bars[i-1],bar=document.getElementById('b'+i),ve=document.getElementById('v'+i);
+    if(v<0){bar.style.width=Math.abs(v)+'%';bar.className='bfill neg';ve.style.color='rgba(185,50,40,.7)';ve.textContent='−'+Math.abs(v)+'%';}
+    else{bar.style.width=v+'%';bar.className='bfill pos';ve.style.color='';ve.textContent=v+'%';}
+  });
+  document.getElementById('leakBadge').textContent=d.leakTotal;
+  d.leakage.forEach((r,i)=>{const n=i+1;document.getElementById('lr'+n+'t').textContent=r.t;document.getElementById('lr'+n+'b').style.width=r.p+'%';document.getElementById('lr'+n+'v').textContent=r.v;});
+  d.actions.forEach((a,i)=>document.getElementById('a'+(i+1)).textContent=a);
+}
+
+function submitContact(){
+  const n=document.getElementById('ctName').value.trim(),e=document.getElementById('ctEmail').value.trim(),m=document.getElementById('ctMsg').value.trim();
+  if(!n||!e||!m)return;
+  // TODO: POST to Formspree/Netlify
+  document.querySelector('.cbtn').style.display='none';
+  document.getElementById('ctConfirm').style.display='block';
+}
+
+// Scroll animations
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';e.target.style.transition='opacity .5s ease,transform .5s ease';}});},{threshold:.08});
+document.querySelectorAll('.step,.pcard,.vcard,.tcard,.diff-card,.ic').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(12px)';obs.observe(el);});
+</script>
+</body>
+</html>
